@@ -5,37 +5,36 @@ const questions = [
   {
     type: 'list',
     name: 'option',
-    message: 'Choose an option',
+    message: 'Choose an option: ',
     choices: [
       {
         value: 1,
-        name: '1. Create task'
+        name: `${'1.'.yellow} Create task`
       },
       {
         value: 2,
-        name: '2. List tasks'
+        name: `${'2.'.yellow} List tasks`
       },
       {
         value: 3,
-        name: '3. List completed tasks'
+        name: `${'3.'.yellow} List completed tasks`
       },
       {
         value: 4,
-        name: '4. List pending task(s)'
+        name: `${'4.'.yellow} List pending task(s)`
       },
       {
         value: 5,
-        name: '5. Complete task(s)'
+        name: `${'5.'.yellow} Complete task(s)`
       },
       {
         value: 6,
-        name: '6. Delete task'
+        name: `${'6.'.yellow} Delete task`
       },
       {
         value: 0,
-        name: '0. Exit'
+        name: `${'0.'.yellow} Exit`
       }
-
     ]
   }
 ]
@@ -43,7 +42,7 @@ const questions = [
 const inquirerMenu = async () => {
   console.clear()
   console.log('====================='.green)
-  console.log('    TODO List App'.green)
+  console.log('    TODO List App'.yellow)
   console.log('=====================\n'.green)
 
   const { option } = await inquirer.prompt(questions)
@@ -64,4 +63,22 @@ const pause = async () => {
   await inquirer.prompt(question)
 }
 
-module.exports = { inquirerMenu, pause }
+async function readInput (message) {
+  const question = [
+    {
+      type: 'input',
+      name: 'desc',
+      message,
+      validate (value) {
+        return value.length
+          ? true
+          : 'Please enter a value'
+      }
+    }
+  ]
+
+  const { desc } = await inquirer.prompt(question)
+  return desc
+}
+
+module.exports = { inquirerMenu, pause, readInput }
