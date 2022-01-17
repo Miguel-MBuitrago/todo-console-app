@@ -24,6 +24,14 @@ const main = async () => {
         tasks.listTasks()
         break
       }
+      case 3: {
+        tasks.listCompletedPendingTasks()
+        break
+      }
+      case 4: {
+        tasks.listCompletedPendingTasks(false)
+        break
+      }
       default: {
         break
       }

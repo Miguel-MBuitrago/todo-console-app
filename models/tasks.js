@@ -21,16 +21,24 @@ class Tasks {
     this._list[task.id] = task
   }
 
-  listTasks () {
-    this.tasksAsArray.forEach((task, index) => {
+  listTasks (task = this.tasksAsArray) {
+    task.forEach((task, index) => {
       const idx = `${index + 1}`.yellow
       const { desc, completedDate } = task
       const state = completedDate
-        ? 'completed'.green
+        ? `${completedDate}`.green
         : 'pending'.red
 
       console.log(`${idx}. ${desc} :: ${state}`)
     })
+  }
+
+  listCompletedPendingTasks (completed = true) {
+    const tasks = completed
+      ? this.tasksAsArray.filter(task => Boolean(task.completedDate))
+      : this.tasksAsArray.filter(task => Boolean(!task.completedDate))
+
+    this.listTasks(tasks)
   }
 }
 
