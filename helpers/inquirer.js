@@ -33,7 +33,7 @@ const questions = [
       },
       {
         value: 0,
-        name: `${'0.'.yellow} Exit`
+        name: 'Exit'.brightBlue
       }
     ]
   }
@@ -59,7 +59,7 @@ const pause = async () => {
     }
   ]
 
-  console.log('\n')
+  console.log()
   await inquirer.prompt(question)
 }
 
@@ -81,4 +81,69 @@ async function readInput (message) {
   return desc
 }
 
-module.exports = { inquirerMenu, pause, readInput }
+async function deleteTasksList (tasks) {
+  const choices = tasks.map((task, index) => {
+    const { id, desc } = task
+    const idx = `${index}.`.yellow
+    return {
+      value: id,
+      name: `${idx} ${desc}`
+    }
+  })
+
+  choices.push({
+    value: 0,
+    name: 'go back'.brightBlue
+  })
+
+  const questions = [
+    {
+      type: 'list',
+      name: 'id',
+      message: 'Delete:',
+      choices
+    }
+  ]
+
+  const { id } = await inquirer.prompt(questions)
+  return id
+}
+
+async function completeTasksList (tasks) {
+  const choices = tasks.map((task, index) => {
+    const { id, desc } = task
+    const idx = `${index}.`.yellow
+    return {
+      value: id,
+      name: `${idx} ${desc}`,
+      checked: Boolean(task.completedDate)
+    }
+  })
+
+  const question = [
+    {
+      type: 'checkbox',
+      name: 'ids',
+      message: 'Select:',
+      choices
+    }
+  ]
+
+  const { ids } = await inquirer.prompt(question)
+  return ids
+}
+
+async function confirm (message) {
+  const question = [
+    {
+      type: 'confirm',
+      name: 'ok',
+      message
+    }
+  ]
+
+  const { ok } = await inquirer.prompt(question)
+  return ok
+}
+
+module.exports = { inquirerMenu, pause, readInput, deleteTasksList, confirm, completeTasksList }

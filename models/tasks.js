@@ -21,6 +21,12 @@ class Tasks {
     this._list[task.id] = task
   }
 
+  deleteTask (id = '') {
+    if (this._list[id]) {
+      delete this._list[id]
+    }
+  }
+
   listTasks (task = this.tasksAsArray) {
     task.forEach((task, index) => {
       const idx = `${index + 1}`.yellow
@@ -39,6 +45,19 @@ class Tasks {
       : this.tasksAsArray.filter(task => Boolean(!task.completedDate))
 
     this.listTasks(tasks)
+  }
+
+  toggleCompleted (ids = []) {
+    ids.forEach(id => {
+      const tarea = this._list[id]
+      tarea.completedDate ??= new Date().toISOString()
+    })
+
+    this.tasksAsArray.forEach(task => {
+      if (!ids.includes(task.id)) {
+        this._list[task.id].completedDate = null
+      }
+    })
   }
 }
 
